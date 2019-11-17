@@ -93,25 +93,20 @@ public class FormChooserListFragment extends ListFragment
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
-    switch(item.getItemId()){
+    if(item.getItemId() == R.id.nameSort) {
 
-      case R.id.nameSort:
-        if (!item.isChecked()) {
-          item.setChecked(true);
-        }
-        mPropSingleton.setProperties(Collections.singletonMap(KEY_SURVEY_SORT_ORDER,SORT_BY_NAME));
-        sortFormList(mItems,SORT_BY_NAME);
-        break;
-
-      case R.id.tableIdSort:
-        mPropSingleton.setProperties(Collections.singletonMap(KEY_SURVEY_SORT_ORDER,SORT_BY_TABLEID));
-        sortFormList(mItems,SORT_BY_TABLEID);
-        if (!item.isChecked()) {
-          item.setChecked(true);
-        }
-        break;
-
-      default:
+      if (!item.isChecked()) {
+        item.setChecked(true);
+      }
+      mPropSingleton.setProperties(Collections.singletonMap(KEY_SURVEY_SORT_ORDER, SORT_BY_NAME));
+      sortFormList(mItems, SORT_BY_NAME);
+    } else if(item.getItemId() == R.id.tableIdSort) {
+      mPropSingleton.setProperties(Collections.singletonMap(KEY_SURVEY_SORT_ORDER, SORT_BY_TABLEID));
+      sortFormList(mItems, SORT_BY_TABLEID);
+      if (!item.isChecked()) {
+        item.setChecked(true);
+      }
+    } else {
         return super.onOptionsItemSelected(item);
     }
 

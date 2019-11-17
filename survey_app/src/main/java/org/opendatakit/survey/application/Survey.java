@@ -14,9 +14,7 @@
 package org.opendatakit.survey.application;
 
 import android.annotation.SuppressLint;
-import com.crashlytics.android.Crashlytics;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import io.fabric.sdk.android.Fabric;
+
 import org.opendatakit.application.CommonApplication;
 import org.opendatakit.survey.R;
 
@@ -28,8 +26,6 @@ import org.opendatakit.survey.R;
  */
 public class Survey extends CommonApplication {
   public static final String t = "Survey";
-
-  private FirebaseAnalytics analytics;
 
   private static Survey singleton = null;
 
@@ -43,10 +39,6 @@ public class Survey extends CommonApplication {
     singleton = this;
 
     super.onCreate();
-
-    Fabric.with(this, new Crashlytics());
-    analytics = FirebaseAnalytics.getInstance(this);
-    analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 
   }
 
