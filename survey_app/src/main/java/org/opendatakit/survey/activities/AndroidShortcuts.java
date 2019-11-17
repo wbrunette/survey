@@ -149,7 +149,7 @@ public class AndroidShortcuts extends BaseActivity {
       }
     }
 
-    builder.setAdapter(new ArrayAdapter<Choice>(this, R.layout.shortcut_item, choices) {
+    builder.setAdapter(new ArrayAdapter<Choice>(this, R.layout.shortcut_item_survey, choices) {
 
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
@@ -157,7 +157,7 @@ public class AndroidShortcuts extends BaseActivity {
 
         if (convertView == null) {
           row = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-              R.layout.shortcut_item, null);
+              R.layout.shortcut_item_survey, null);
         } else {
           row = convertView;
         }
