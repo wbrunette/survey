@@ -19,7 +19,7 @@ the License.
 			  android:orientation="vertical" >
 
 	<org.opendatakit.survey.views.OdkSurveyWebView
-			android:id="@+id/webkit"
+			android:id="@id/webkit_survey"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:background="@android:color/black"

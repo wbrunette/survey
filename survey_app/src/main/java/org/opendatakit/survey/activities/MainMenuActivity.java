@@ -60,10 +60,8 @@ import org.opendatakit.provider.FormsColumns;
 import org.opendatakit.provider.FormsProviderAPI;
 import org.opendatakit.provider.FormsProviderUtils;
 import org.opendatakit.survey.R;
-import org.opendatakit.survey.application.Survey;
 import org.opendatakit.survey.fragments.BackPressWebkitConfirmationDialogFragment;
 import org.opendatakit.survey.fragments.FormChooserListFragment;
-import org.opendatakit.survey.fragments.InitializationFragment;
 import org.opendatakit.survey.fragments.WebViewFragment;
 import org.opendatakit.survey.logic.FormIdStruct;
 import org.opendatakit.survey.logic.SurveyDataExecutorProcessor;
@@ -94,7 +92,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
 
   private static final String t = MainMenuActivity.class.getSimpleName();
   public enum ScreenList {
-    MAIN_SCREEN, FORM_CHOOSER, WEBKIT, INITIALIZATION_DIALOG, ABOUT_MENU
+    MAIN_SCREEN, FORM_CHOOSER, WEBKIT, ABOUT_MENU
   };
 
   // Extra returned from gp activity
@@ -353,7 +351,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
 
   public void scanForConflictAllTables() {
     
-    UserDbInterface db = ((Survey) getApplication()).getDatabase();
+    UserDbInterface db = ((CommonApplication) getApplication()).getDatabase();
     if ( db != null ) {
       List<TableHealthInfo> info;
       DbHandle dbHandle = null;
@@ -648,8 +646,6 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // android.os.Debug.waitForDebugger();
-
     try {
       // ensure that we have a BackgroundTaskFragment...
       // create it programmatically because if we place it in the
@@ -814,7 +810,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
   public void onResume() {
     super.onResume();
 
-    ((Survey) getApplication()).establishDoNotFireDatabaseConnectionListener(this);
+    ((CommonApplication) getApplication()).establishDoNotFireDatabaseConnectionListener(this);
 
     swapToFragmentView(currentFragmentType);
   }
@@ -822,7 +818,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
   @Override
   public void onPostResume() {
     super.onPostResume();
-    ((Survey) getApplication()).fireDatabaseConnectionListener();
+    ((CommonApplication) getApplication()).fireDatabaseConnectionListener();
   }
 
   @Override
@@ -1087,11 +1083,6 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
       if (newFragment == null) {
         newFragment = new FormChooserListFragment();
       }
-    } else if (newScreenType == ScreenList.INITIALIZATION_DIALOG) {
-      newFragment = mgr.findFragmentByTag(newScreenType.name());
-      if (newFragment == null) {
-        newFragment = new InitializationFragment();
-      }
     } else if (newScreenType == ScreenList.WEBKIT) {
       newFragment = mgr.findFragmentByTag(newScreenType.name());
       if (newFragment == null) {
@@ -1140,24 +1131,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
     }
 
     
-    // and see if we should re-initialize...
-    if ((currentFragmentType != ScreenList.INITIALIZATION_DIALOG)
-        && ((Survey) getApplication()).shouldRunInitializationTask(getAppName())) {
-      WebLogger.getLogger(getAppName()).i(t, "swapToFragmentView -- calling clearRunInitializationTask");
-      // and immediately clear the should-run flag...
-      ((Survey) getApplication()).clearRunInitializationTask(getAppName());
-      // OK we should swap to the InitializationFragment view
-      // this will skip the transition to whatever screen we were trying to 
-      // go to and will instead show the InitializationFragment view. We
-      // restore to the desired screen via the setFragmentToShowNext()
-      //
-      // NOTE: this discards the uncommitted transaction.
-      // Robolectric complains about a recursive state transition.
-      if ( trans != null ) {
-        trans.commit();
-      }
-      swapToFragmentView(ScreenList.INITIALIZATION_DIALOG);
-    } else {
+
       // before we actually switch to a WebKit, be sure
       // we have the form definition for it...
       if (currentFragmentType == ScreenList.WEBKIT && getCurrentForm() == null) {
@@ -1169,7 +1143,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
         Uri formUri = null;
 
         if (uri.getScheme().equalsIgnoreCase(uriFormsProvider.getScheme())
-            && uri.getAuthority().equalsIgnoreCase(uriFormsProvider.getAuthority())) {
+                && uri.getAuthority().equalsIgnoreCase(uriFormsProvider.getAuthority())) {
           List<String> segments = uri.getPathSegments();
           if (segments != null && segments.size() >= 2) {
             String appName = segments.get(0);
@@ -1177,13 +1151,13 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
             String tableId = segments.get(1);
             String formId = (segments.size() > 2) ? segments.get(2) : null;
             formUri = Uri.withAppendedPath(
-                Uri.withAppendedPath(
-                    Uri.withAppendedPath(FormsProviderAPI.CONTENT_URI, appName),
-                      tableId), formId);
+                    Uri.withAppendedPath(
+                            Uri.withAppendedPath(FormsProviderAPI.CONTENT_URI, appName),
+                            tableId), formId);
           } else {
             swapToFragmentView(ScreenList.FORM_CHOOSER);
             createErrorDialog(
-                getString(R.string.invalid_uri_expecting_n_segments, uri.toString(), 2), EXIT);
+                    getString(R.string.invalid_uri_expecting_n_segments, uri.toString(), 2), EXIT);
             return;
           }
           // request specifies a specific formUri -- try to open that
@@ -1203,7 +1177,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
         trans.commit();
       }
       invalidateOptionsMenu();
-    }
+
   }
 
   private void levelSafeInvalidateOptionsMenu() {
@@ -1439,8 +1413,6 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
       String action,
       JSONObject valueContentMap) {
 
-    // android.os.Debug.waitForDebugger();
-
     if (isWaitingForBinaryData()) {
       WebLogger.getLogger(getAppName()).w(t, "Already waiting for data -- ignoring");
       return "IGNORE";
@@ -1515,7 +1487,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
     }
     if ( responseJSON != null) {
       this.queueResponseJSON.push(responseJSON);
-      final ODKWebView webView = findViewById(R.id.webkit);
+      final ODKWebView webView = findViewById(R.id.webkit_survey);
       if (webView != null) {
         final String appName = getAppName();
         runOnUiThread(new Runnable() {
@@ -1579,7 +1551,7 @@ public class MainMenuActivity extends BaseActivity implements IOdkSurveyActivity
     super.onActivityResult(requestCode, resultCode, intent);
 
     WebLogger.getLogger(getAppName()).i(t, "onActivityResult");
-    ODKWebView view = findViewById(R.id.webkit);
+    ODKWebView view = findViewById(R.id.webkit_survey);
 
     if (requestCode == HANDLER_ACTIVITY_CODE) {
       // save persisted values into a local variable

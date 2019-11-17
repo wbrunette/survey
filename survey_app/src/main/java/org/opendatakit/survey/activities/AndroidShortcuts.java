@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import org.opendatakit.activities.BaseActivity;
+import org.opendatakit.application.CommonApplication;
 import org.opendatakit.consts.IntentConsts;
 import org.opendatakit.database.utilities.CursorUtils;
 import org.opendatakit.properties.CommonToolProperties;
@@ -39,7 +40,6 @@ import org.opendatakit.properties.PropertiesSingleton;
 import org.opendatakit.provider.FormsColumns;
 import org.opendatakit.provider.FormsProviderAPI;
 import org.opendatakit.survey.R;
-import org.opendatakit.survey.application.Survey;
 import org.opendatakit.utilities.LocalizationUtils;
 import org.opendatakit.utilities.ODKFileUtils;
 
@@ -241,7 +241,7 @@ public class AndroidShortcuts extends BaseActivity {
   
   @Override
   public String getAppName() {
-    return ((Survey) getApplication()).getToolName();
+    return ((CommonApplication) getApplication()).getToolName();
   }
 
 }
