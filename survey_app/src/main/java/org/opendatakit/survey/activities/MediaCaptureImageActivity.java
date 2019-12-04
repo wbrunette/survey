@@ -22,8 +22,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Audio;
 import android.provider.MediaStore.Images;
-import androidx.core.content.FileProvider;
 import android.widget.Toast;
+
+import androidx.core.content.FileProvider;
+
 import org.opendatakit.activities.BaseActivity;
 import org.opendatakit.consts.IntentConsts;
 import org.opendatakit.logging.WebLogger;

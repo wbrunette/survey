@@ -16,10 +16,12 @@ package org.opendatakit.survey.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import androidx.fragment.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.fragment.app.DialogFragment;
+
 import org.opendatakit.survey.R;
 import org.opendatakit.survey.activities.IOdkSurveyActivity;
 

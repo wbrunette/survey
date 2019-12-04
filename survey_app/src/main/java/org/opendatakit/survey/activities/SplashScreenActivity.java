@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import org.opendatakit.activities.BaseLauncherActivity;
 import org.opendatakit.application.ToolAwareApplication;
 import org.opendatakit.consts.IntentConsts;

@@ -17,6 +17,7 @@ package org.opendatakit.survey.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import org.opendatakit.activities.BaseActivity;
 import org.opendatakit.consts.IntentConsts;
 import org.opendatakit.logging.WebLogger;

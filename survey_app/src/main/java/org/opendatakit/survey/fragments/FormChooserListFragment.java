@@ -14,10 +14,6 @@
 
 package org.opendatakit.survey.fragments;
 
-import androidx.fragment.app.ListFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +23,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import org.opendatakit.activities.IAppAwareActivity;
 import org.opendatakit.properties.CommonToolProperties;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static org.opendatakit.properties.CommonToolProperties.*;
+import static org.opendatakit.properties.CommonToolProperties.KEY_SURVEY_SORT_ORDER;
 
 /**
  * Fragment displaying the list of available forms to fill out.

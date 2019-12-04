@@ -17,6 +17,7 @@ package org.opendatakit.survey.logic;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+
 import org.opendatakit.database.utilities.CursorUtils;
 import org.opendatakit.provider.FormsColumns;
 import org.opendatakit.utilities.ODKFileUtils;

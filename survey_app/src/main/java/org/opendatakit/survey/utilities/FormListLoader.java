@@ -14,10 +14,12 @@
 
 package org.opendatakit.survey.utilities;
 
-import androidx.loader.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+
+import androidx.loader.content.AsyncTaskLoader;
+
 import org.opendatakit.properties.CommonToolProperties;
 import org.opendatakit.properties.PropertiesSingleton;
 import org.opendatakit.provider.FormsColumns;

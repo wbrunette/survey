@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import org.opendatakit.activities.BaseActivity;
 import org.opendatakit.application.CommonApplication;
 import org.opendatakit.consts.IntentConsts;
